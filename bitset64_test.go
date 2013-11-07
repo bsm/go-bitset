@@ -248,21 +248,21 @@ func TestSymmetricDifference64(t *testing.T) {
 	}
 }
 
-// func TestComplement64(t *testing.T) {
-// 	a := New64(50)
-// 	b := a.Complement()
-// 	if b.Count() != 50 {
-// 		t.Errorf("Complement failed, size should be 50, but was %d", b.Count())
-// 	}
-// 	a = New64(50)
-// 	a.Set(10)
-// 	a.Set(20)
-// 	a.Set(42)
-// 	b = a.Complement()
-// 	if b.Count() != 47 {
-// 		t.Errorf("Complement failed, size should be 47, but was %d", b.Count())
-// 	}
-// }
+func TestComplement64(t *testing.T) {
+	a := New64(50)
+	b := a.Complement()
+	if b.Count() != 50 {
+		t.Errorf("Complement failed, size should be 50, but was %d", b.Count())
+	}
+	a = New64(50)
+	a.Set(10)
+	a.Set(20)
+	a.Set(42)
+	b = a.Complement()
+	if b.Count() != 47 {
+		t.Errorf("Complement failed, size should be 47, but was %d", b.Count())
+	}
+}
 
 func BenchmarkSet64(b *testing.B) {
 	b.StopTimer()

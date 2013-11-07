@@ -104,8 +104,8 @@ func (b *Bitset64) Copy(c *Bitset64) (n uint64) {
 
 func popCountUint64(x uint64) uint64 {
 	x -= (x >> 1) & m1_64                // put count of each 2 bits into those 2 bits
-	x = (x & m2_64) + ((x >> 2) & m2_64) // put count of each 4 bits into those 4 bits 
-	x = (x + (x >> 4)) & m4_64           // put count of each 8 bits into those 8 bits 
+	x = (x & m2_64) + ((x >> 2) & m2_64) // put count of each 4 bits into those 4 bits
+	x = (x + (x >> 4)) & m4_64           // put count of each 8 bits into those 8 bits
 	x += x >> 8                          // put count of each 16 bits into their lowest 8 bits
 	x += x >> 16                         // put count of each 32 bits into their lowest 8 bits
 	x += x >> 32                         // put count of each 64 bits into their lowest 8 bits
@@ -212,14 +212,14 @@ func (b *Bitset64) cleanLastWord() {
 }
 
 // Return the (local) complement of a bitset (up to n bits).
-// func (b *Bitset64) Complement() (result *Bitset64) {
-// 	result = New64(b.n)
-// 	for i, w := range b.b {
-// 		result.b[i] = ^(w)
-// 	}
-// 	result.cleanLastWord()
-// 	return
-// }
+func (b *Bitset64) Complement() (result *Bitset64) {
+	result = New64(b.n)
+	for i, w := range b.b {
+		result.b[i] = ^(w)
+	}
+	result.cleanLastWord()
+	return
+}
 
 // Returns true if all bits in the bitset are set.
 func (b *Bitset64) All() bool {
