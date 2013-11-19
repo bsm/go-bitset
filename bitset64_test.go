@@ -264,6 +264,22 @@ func TestComplement64(t *testing.T) {
 	}
 }
 
+func TestOffsets64(t *testing.T) {
+	a := New64(100)
+	a.Set(0)
+	a.Set(63)
+	a.Set(64)
+	a.Set(65)
+	a.Set(92)
+	a.Set(99)
+	exp := []uint64{0, 63, 64, 65, 92, 99}
+	act := a.Offsets()
+
+	if len(exp) != len(act) || exp[0] != act[0] || exp[1] != act[1] || exp[2] != act[2] || exp[3] != act[3] || exp[4] != act[4] {
+		t.Errorf("Offsets don't match %v, but received %v", exp, act)
+	}
+}
+
 func BenchmarkSet64(b *testing.B) {
 	b.StopTimer()
 	r := rand.New(rand.NewSource(0))

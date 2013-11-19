@@ -121,6 +121,27 @@ func (b *Bitset64) Count() uint64 {
 	return sum
 }
 
+// Get the number of set bits in the bitset.
+func (b *Bitset64) Offsets() []uint64 {
+	var wi, bi uint64
+
+	res := make([]uint64, 0)
+	wt := wordsNeeded64(b.n)
+	for wi = 0; wi < wt; wi++ {
+		w := b.b[wi]
+		if w == 0 {
+			continue
+		}
+
+		for bi = 0; bi < sw_64; bi++ {
+			if w&(1<<bi) != 0 {
+				res = append(res, wi*sw_64+bi)
+			}
+		}
+	}
+	return res
+}
+
 // Test if two bitsets are equal. Returns true if both bitsets are the same
 // size and all the same bits are set in both bitsets.
 func (b *Bitset64) Equal(c *Bitset64) bool {
