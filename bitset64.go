@@ -235,6 +235,9 @@ func (b *Bitset64) cleanLastWord() {
 // Return the (local) complement of a bitset (up to n bits).
 func (b *Bitset64) Complement() (result *Bitset64) {
 	result = New64(b.n)
+	if b.n < 1 {
+		return
+	}
 	for i, w := range b.b {
 		result.b[i] = ^(w)
 	}

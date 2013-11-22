@@ -178,6 +178,15 @@ func TestUnion64(t *testing.T) {
 	if !c.Equal(d) {
 		t.Errorf("Union should be symmetric")
 	}
+
+	a = New64(0)
+	c = a.Union(b)
+	if c.Len() != 200 {
+		t.Errorf("Union should have 200 bits, but had %d", c.Len())
+	}
+	if c.Count() != 150 {
+		t.Errorf("Union should have 150 bits set, but had %d", c.Count())
+	}
 }
 
 func TestIntersection64(t *testing.T) {
@@ -198,6 +207,15 @@ func TestIntersection64(t *testing.T) {
 	}
 	if !c.Equal(d) {
 		t.Errorf("Intersection should be symmetric")
+	}
+
+	a = New64(0)
+	c = a.Intersection(b)
+	if c.Len() != 0 {
+		t.Errorf("Intersection should have 0 bits, but had %d", c.Len())
+	}
+	if c.Count() != 0 {
+		t.Errorf("Intersection should have 0 bits set, but had %d", c.Count())
 	}
 }
 
@@ -221,6 +239,15 @@ func TestDifference64(t *testing.T) {
 	}
 	if c.Equal(d) {
 		t.Errorf("Difference, here, should not be symmetric")
+	}
+
+	a = New64(0)
+	c = a.Difference(b)
+	if c.Len() != 0 {
+		t.Errorf("a-b Difference should have 0 bits, but had %d", c.Len())
+	}
+	if c.Count() != 0 {
+		t.Errorf("a-b Difference should have 0 bits set, but had %d", c.Count())
 	}
 }
 
@@ -262,6 +289,24 @@ func TestComplement64(t *testing.T) {
 	if b.Count() != 47 {
 		t.Errorf("Complement failed, size should be 47, but was %d", b.Count())
 	}
+
+	a = New64(1)
+	b = a.Complement()
+	if b.Len() != 1 {
+		t.Errorf("Complement failed, length should be 1, but was %d", b.Len())
+	}
+	if b.Count() != 1 {
+		t.Errorf("Complement failed, count should be 1, but was %d", b.Count())
+	}
+
+	a = New64(0)
+	b = a.Complement()
+	if b.Len() != 0 {
+		t.Errorf("Complement failed, length should be 0, but was %d", b.Len())
+	}
+	if b.Count() != 0 {
+		t.Errorf("Complement failed, count should be 0, but was %d", b.Count())
+	}
 }
 
 func TestOffsets64(t *testing.T) {
@@ -277,6 +322,22 @@ func TestOffsets64(t *testing.T) {
 
 	if len(exp) != len(act) || exp[0] != act[0] || exp[1] != act[1] || exp[2] != act[2] || exp[3] != act[3] || exp[4] != act[4] {
 		t.Errorf("Offsets don't match %v, but received %v", exp, act)
+	}
+
+	a = New64(0)
+	if len(a.Offsets()) != 0 {
+		t.Errorf("Offsets should be [], but was %v", a.Offsets())
+	}
+}
+
+func TestReset64(t *testing.T) {
+	a := New64(100)
+	for i := uint64(1); i < 100; i += 2 {
+		a.Set(i) // 01010101010 ... 0000000
+	}
+	a.Reset()
+	if a.Count() != 0 {
+		t.Errorf("Reset failed, size should be 0, but was %d", a.Count())
 	}
 }
 
